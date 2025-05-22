@@ -1,10 +1,16 @@
-import sqlite3
 from db_funcs import *
-from src.const import USERS_DATA_FIELDS
+from src.api.api import get_users_info, parse_result
+import os
 
-conn = sqlite3.connect("random_user.db")
-cursor = conn.cursor()
+cursor = create_db()
 
-make_db(conn, "UsersData", USERS_DATA_FIELDS)
+if not os.path.exists("random_user.db"):
+    make_table_random_user(cursor)
+
+a = get_users_info().json()
+print(a)
+
+
+
 
 
