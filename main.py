@@ -10,7 +10,7 @@ from src.db.db_funcs import *
 
 app = FastAPI()
 
-conn = create_db("random_user.db")
+conn = create_db("src/random_user.db")
 glob_cursor = conn.cursor()
 
 
@@ -24,7 +24,7 @@ def get_random_user(request: fastapi.Request):
         random_user_data = cursor_random.execute("SELECT * from random_user WHERE id = ?", (random_id,)).fetchone()
         return templates.TemplateResponse("random.html", {"request": request, "user": random_user_data})
     except Exception as e:
-        with open("log/log.txt", "a", encoding="utf-8") as fl:
+        with open("src/log/log.txt", "a", encoding="utf-8") as fl:
             tm = datetime.datetime.strftime(datetime.datetime.now(), "%H:%M:%S")
             fl.write(f"{tm} -- {e}\n")
     finally:
@@ -38,7 +38,7 @@ def get_user_photo(user_id: int):
     try:
         photo = cursor_1.execute("SELECT photo FROM random_user WHERE id = ?", (int(user_id),)).fetchone()
     except Exception as e:
-        with open("log/log.txt", "a", encoding="utf-8") as fl:
+        with open("src/log/log.txt", "a", encoding="utf-8") as fl:
             tm = datetime.datetime.strftime(datetime.datetime.now(), "%H:%M:%S")
             fl.write(f"{tm} -- {e}\n")
     finally:

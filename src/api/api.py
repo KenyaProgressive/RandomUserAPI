@@ -1,5 +1,4 @@
 import os
-
 import requests
 
 from src.const import REQUEST_URL, START_SERVER_DATA_GENERATE_LIMIT, INCLUDED_FIELDS_START_SERVER

@@ -1,3 +1,3 @@
 from fastapi.templating import Jinja2Templates
 
-templates = Jinja2Templates(directory="UI/templates")
+templates = Jinja2Templates(directory="src/UI/templates")
