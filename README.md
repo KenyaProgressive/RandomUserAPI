@@ -31,7 +31,6 @@ pip install -r requirements.txt
 
 1. Запустите приложение:
 ```bash
-cd src
 python main.py
 ```
 > Первый запуск может производиться до 150 секунд, 
