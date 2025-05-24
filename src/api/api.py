@@ -1,8 +1,12 @@
-import requests
-from src.const import REQUEST_URL, START_SERVER_DATA_GENERATE_LIMIT, INCLUDED_FIELDS_START_SERVER
 import os
 
+import requests
+
+from src.const import REQUEST_URL, START_SERVER_DATA_GENERATE_LIMIT, INCLUDED_FIELDS_START_SERVER
+
+
 def get_users_info() -> requests.Response:
+    """Получение данных с API"""
     users_info_params = {
         "results": START_SERVER_DATA_GENERATE_LIMIT,
         "inc": INCLUDED_FIELDS_START_SERVER,
@@ -15,6 +19,7 @@ def get_users_info() -> requests.Response:
 
 
 def parse_result(response) -> list:
+    """Выборка и преобразование нужных данных для удобного пуша в БД"""
     if not os.path.exists("photos"):
         os.mkdir("photos")
     users_data = response
@@ -36,6 +41,7 @@ def parse_result(response) -> list:
 
 
 def making_residental_address_str(location_dict) -> str:
+    """Составление адреса жительства по европейскому стандарту"""
     street_number_and_name: str = ' '.join([str(location_dict["street"]["number"]), location_dict["street"]["name"]])
     city_name_and_state_name: str = ', '.join([location_dict["city"], location_dict["state"]])
     country_name_and_postcode: str = ', '.join([str(location_dict["postcode"]), location_dict["country"]])
@@ -45,6 +51,7 @@ def making_residental_address_str(location_dict) -> str:
 
 
 def get_photo_from_url(url: str, number_of_file: int):
+    """Сохранение фотографий на диск, для дальнейшего пуша в БД"""
     image_response = requests.get(url, stream=True)
     if image_response.status_code == 200:
         with open(f"photos/user-photo-{number_of_file}.jpg", "wb") as fl:
@@ -53,12 +60,16 @@ def get_photo_from_url(url: str, number_of_file: int):
     else:
         print(f"Loading is failed: {image_response.status_code}")
 
+
 def get_photo_from_disk(filename: str):
+    """Чтение файл с изображениями для пуша в БД"""
     try:
         with open(filename, "rb") as fl:
             photo_data = fl.read()
         return photo_data
     except FileNotFoundError:
         print("Файл не существует.")
+        return b''
     except Exception as e:
         print(e)
+        return b''

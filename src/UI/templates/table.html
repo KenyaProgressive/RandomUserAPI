@@ -9,6 +9,7 @@
             width: 100%;
             border-collapse: collapse;
         }
+
         th,
         td {
             border: 1px solid #ccc;
@@ -32,13 +33,14 @@
 <body>
     <form method="get" action="/">
         <label>Количество пользователей:</label>
-        <input type="number" name="count" min="1" max="1000" value="{{ request.query_params.get('count', 20) }}">
+        <input type="number" name="count" min="1" max="1000" value="{{ count }}">
         <button type="submit">Загрузить</button>
     </form>
     <div class="scrollable">
         <table>
             <thead>
                 <tr>
+                    <th>№</th>
                     <th>Пол</th>
                     <th>Имя</th>
                     <th>Фамилия</th>
@@ -50,25 +52,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user in users[:shown_count] %}
+                {% for user in users %}
                 <tr>
-                    <td>{{ user.gender }}</td>
-                    <td>{{ user.first_name }}</td>
-                    <td>{{ user.last_name }}</td>
-                    <td>{{ user.phone }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.address }}</td>
-                    <td><img src="/photo/{{ user.id }}" alt="Фото"></td>
-                    <td><a href="/user/{{ user.id }}">User-card</a></td>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>{{ user[3] }}</td>
+                    <td>{{ user[4] }}</td>
+                    <td>{{ user[5] }}</td>
+                    <td>{{ user[6] }}</td>
+                    <td><img src="/get-photo/{{ user[0] }}" alt="Фото"></td>
+                    <td><a href="/{{ user[0] }}">User-card</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    {% if users|length > shown_count %}
+    {% if show_counter < count %}
     <form method="get" action="/">
-        <input type="hidden" name="count" value="{{ request.query_params.get('count', 20) }}">
-        <input type="hidden" name="shown_count" value="{{ shown_count + 20 }}">
+        <input type="hidden" name="count" value="{{ count }}">
+        <input type="hidden" name="show_counter" value="{{ show_counter + 50 if show_counter + 50 < count else count }}">
         <button type="submit">Развернуть</button>
     </form>
     {% endif %}

@@ -1,6 +1,6 @@
 import sqlite3
 from src.api.api import get_users_info, parse_result, get_photo_from_disk
-
+import shutil
 
 def create_db(path_to_db: str) -> sqlite3.Connection:
     conn = sqlite3.connect(path_to_db, check_same_thread=False)
@@ -29,9 +29,11 @@ def push_data_to_table(curr: sqlite3.Cursor, conn: sqlite3.Connection):
     try:
         curr.executemany(query, values_to_push)
         conn.commit()
-
     except Exception as e:
         print(e)
+    finally:
+        shutil.rmtree("photos")
+    return parsed_data
 
 
 def prepare_data_for_push(parsed_data: list):
@@ -54,3 +56,6 @@ def get_users_info_from_db(curr: sqlite3.Cursor, limit: int):
     result = curr.execute("SELECT * FROM random_user")
     return result.fetchmany(limit)
 
+def get_users_count(curr: sqlite3.Cursor):
+    result = curr.execute("SELECT COUNT(*) FROM random_user")
+    return result.fetchone()[0]

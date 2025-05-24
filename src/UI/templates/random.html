@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Случайный пользователь</title>
+    <style>
+        table { border-collapse: collapse; }
+        td, th { border: 1px solid #ccc; padding: 8px; }
+        img { width: 100px; height: 100px; object-fit: cover; }
+    </style>
+</head>
+<body>
+    <h2>Случайный пользователь</h2>
+    <table>
+        <tr><th>№</th><td>{{ user[0] }}</td></tr>
+        <tr><th>Пол</th><td>{{ user[1] }}</td></tr>
+        <tr><th>Имя</th><td>{{ user[2] }}</td></tr>
+        <tr><th>Фамилия</th><td>{{ user[3] }}</td></tr>
+        <tr><th>Телефон</th><td>{{ user[4] }}</td></tr>
+        <tr><th>Email</th><td>{{ user[5] }}</td></tr>
+        <tr><th>Адрес проживания</th><td>{{ user[6] }}</td></tr>
+        <tr><th>Фото</th><td><img src="/get-photo/{{ user[0] }}" alt="Фото"></td></tr>
+    </table>
+    <a href="/">Назад к списку</a>
+</body>
+</html>
